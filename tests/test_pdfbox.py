@@ -14,11 +14,23 @@ class test_pdfbox(TestCase):
     def setUpClass(cls):
         cls.p = pdfbox.PDFBox()
 
+    def test_init_multiple(self):
+        # Try to initialize and use a second 
+        # instance of the class:
+        p2 = pdfbox.PDFBox()
+
     def test_extract_text(self):
         with TemporaryDirectory() as output_dir:
             output_path = (Path(output_dir) / 'test.txt').resolve()
             self.p.extract_text('./test.pdf', output_path)
             self.assertTrue('test.txt' in os.listdir(output_dir))
+
+    def test_extract_text_input_with_spaces(self):
+        with TemporaryDirectory() as output_dir:
+            output_path = (Path(output_dir) / 'test space.txt').resolve()
+            self.p.extract_text('./test space.pdf', output_path)
+            print(os.listdir(output_dir))
+            self.assertTrue('test space.txt' in os.listdir(output_dir))
 
     def test_pdf_to_images(self):
         with TemporaryDirectory() as output_dir:
